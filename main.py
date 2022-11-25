@@ -2,6 +2,7 @@ from enum import Enum
 from fastapi import FastAPI
 from typing import Optional
 from pydantic import BaseModel
+from model import *
 
 class Model(str,Enum):
     modelName = "ApprentissageSupervisé | Random Forrest",
@@ -27,6 +28,21 @@ class Item(BaseModel):
 
 app = FastAPI()
 
+new_wine = {'fixedAcidity' : 7.4,
+    'volatileAcidity' : 0.7,
+    'citricAcid' : 0,
+    'residualSugar' : 1.9,
+    'chlorides' : 0.076,
+    'freeSulfurDioxide' : 11,
+    'totalSulfurDioxide' : 34,
+    'density' : 0.9978,
+    'pH' : 3.51,
+    'sulphates' : 0.56,
+    'alcohol' : 9.4}
+
+model = train_model("Wines.csv")
+
+print(predict_quality(new_wine, model))
 
 #routes 
 
@@ -38,10 +54,22 @@ async def root():
 async def get_module():
     return{"message": Model.modelName}
 
+@app.get("/api/predict")
+async def create_item(item: Item):
+    return item
+
 @app.get("/api/model/description")
 async def get_module():
     return{"Paramètres": Model.parameters,"Métriques de Performance": Model.parameters}
 
-@app.put("/api/predict")
+@app.put("/api/model")
+async def create_item(item: Item):
+    return item
+
+@app.post("/api/predict")
+async def create_item(item: Item):
+    return item
+
+@app.post("/api/model/retrain")
 async def create_item(item: Item):
     return item
