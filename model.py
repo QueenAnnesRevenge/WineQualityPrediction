@@ -108,16 +108,16 @@ new_row = {'fixedAcidity' : 7.4,
     'quality' : 5}
 
 
-df = pd.read_csv("Wines.csv")
+#df = pd.read_csv("Wines.csv")
 
 #print(get_best_wine(df))
 
-model, x_train, x_test, y_train, y_test = get_model(df)
+#model, x_train, x_test, y_train, y_test = get_model(df)
 #model = train_model(model,x_train,y_train)
 #pickle_model(model)
 
-pickled_model = pickle.load(open('model.pkl', 'rb'))
-print(pickled_model.get_params())
+#pickled_model = pickle.load(open('model.pkl', 'rb'))
+#print(pickled_model.get_params())
 #print(description(pickled_model,x_test,y_test)[2])
 
 #new_df = add_to_df(df,new_row)

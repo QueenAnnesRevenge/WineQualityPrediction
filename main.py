@@ -40,9 +40,11 @@ new_wine = {'fixedAcidity' : 7.4,
     'sulphates' : 0.56,
     'alcohol' : 9.4}
 
-model = train_model("Wines.csv")
+df = pd.read_csv("Wines.csv")
+model, x_train, x_test, y_train, y_test = get_model(df)
+model = train_model(model,x_train,y_train)
 
-print(predict_quality(new_wine, model))
+print(predict_quality(new_wine,model))
 
 #routes 
 
@@ -50,7 +52,7 @@ print(predict_quality(new_wine, model))
 async def root():
     return {"message": "Bonjour Lucas, tu devrais essayer /api/model en premier :)"}
 
-@app.get("/api/model/")
+@app.get("/api/model")
 async def get_module():
     return{"message": Model.modelName}
 
