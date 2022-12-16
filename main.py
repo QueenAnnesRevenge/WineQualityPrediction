@@ -4,6 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 from model import *
 
+
 class Model(str,Enum):
     modelName = "ApprentissageSupervisé | Random Forrest",
     parameters = "",
@@ -74,7 +75,7 @@ async def get_module():
 
 @app.get("/api/predict")
 async def get_module():
-    return get_best_wine(df)
+    return get_best_wine()
 
 @app.get("/api/model/description")
 async def get_module():
@@ -82,9 +83,22 @@ async def get_module():
     return{"Voici les paramètres du modèle": descript[0] , " avec un précision de" : descript[1]}
 
 @app.put("/api/model")
-async def create_item(item: New_wine_in_df):
-    new_df = add_to_df(df,item)
-    return{"C'est bon, c'est rajouté au df"}
+async def create_item(new : New_wine_in_df):
+    new_row = {'fixedAcidity' : new.fixedAcidity,
+    'volatileAcidity' : new.volatileAcidity,
+    'citricAcid' : new.citricAcid,
+    'residualSugar' :new.residualSugar,
+    'chlorides' : new.chlorides,
+    'freeSulfurDioxide' : new.freeSulfurDioxide,
+    'totalSulfurDioxide' : new.totalSulfurDioxide,
+    'density' : new.density,
+    'pH' : new.pH,
+    'sulphates' : new.sulphates,
+    'alcohol' : new.alcohol,
+    'quality' : new.quality
+    }
+    add_to_df(df,new_row)
+    return {"On a bien rajouté une entrée au modele"}
 
 @app.post("/api/predict")
 async def create_item(item: Item):

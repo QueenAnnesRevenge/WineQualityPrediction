@@ -3,14 +3,16 @@ import pandas as pd
 import matplotlib as plt
 from pandas import json_normalize
 import pickle
+from csv import writer
 
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-def get_best_wine(df):
+def get_best_wine():
     
+    df = pd.read_csv("Wines.csv")
     df = df.sort_values(by = 'quality', ascending=False)
 
     best_wine = {'fixedAcidity' : df.iloc[0][0],
@@ -61,12 +63,18 @@ def description(model, x_test, y_test):
     
     return params, accuracy
 
-#add a new row to the dataframe 
+#add a new row to the csv 
 def add_to_df(df,new_row):
-    df = df.drop(columns=['Id'])
-    df.columns = ['fixedAcidity', 'volatileAcidity', 'citricAcid', 'residualSugar', 'chlorides', 'freeSulfurDioxide', 'totalSulfurDioxide', 'density', 'pH', 'sulphates', 'alcohol', 'quality']
-    new_df = df.append(new_row, ignore_index=True)
-    return new_df
+    last_row = df.tail(1)
+    new_id = int(last_row.iloc[0][12]+1)
+    new_line = [new_row['fixedAcidity'],new_row['volatileAcidity'],new_row['citricAcid'],new_row['residualSugar'],
+    new_row['chlorides'],new_row['freeSulfurDioxide'],new_row['totalSulfurDioxide'],new_row['density'],new_row['pH'],
+    new_row['sulphates'],new_row['alcohol'],new_row['quality'],new_id]
+
+    with open('Wines.csv', 'a') as f_object:
+        writer_object = writer(f_object)
+        writer_object.writerow(new_line)
+        f_object.close()
 
 #get model of prediction and the new data divided in train and test data
 def get_new_model(df):
@@ -92,7 +100,8 @@ new_wine = {'fixedAcidity' : 7.4,
     'density' : 0.9978,
     'pH' : 3.51,
     'sulphates' : 0.56,
-    'alcohol' : 9.4}
+    'alcohol' : 9.4
+    }
 
 new_row = {'fixedAcidity' : 7.4,
     'volatileAcidity' : 0.7,
@@ -105,7 +114,8 @@ new_row = {'fixedAcidity' : 7.4,
     'pH' : 3.51,
     'sulphates' : 0.56,
     'alcohol' : 9.4,
-    'quality' : 5}
+    'quality' : 5
+    }
 
 
 #df = pd.read_csv("Wines.csv")
