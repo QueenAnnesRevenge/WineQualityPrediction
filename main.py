@@ -22,29 +22,45 @@ class Item(BaseModel):
     density : float
     pH : float
     sulphates : float
-    alcool : float
+    alcohol : float
+    
+class New_wine_in_df(BaseModel):
+    fixedAcidity : float
+    volatileAcidity : float
+    citricAcid : float
+    residualSugar : float
+    chlorides : float
+    freeSulfurDioxide : float
+    totalSulfurDioxide : float
+    density : float
+    pH : float
+    sulphates : float
+    alcohol : float
     quality : float
-    id : int
+
+
 
 app = FastAPI()
 
-new_wine = {'fixedAcidity' : 7.4,
-    'volatileAcidity' : 0.7,
-    'citricAcid' : 0,
-    'residualSugar' : 1.9,
-    'chlorides' : 0.076,
-    'freeSulfurDioxide' : 11,
-    'totalSulfurDioxide' : 34,
-    'density' : 0.9978,
-    'pH' : 3.51,
-    'sulphates' : 0.56,
-    'alcohol' : 9.4}
+new_wine ={
+  "fixedAcidity": 7.4,
+  "volatileAcidity": 0.7,
+  "citricAcid": 0,
+  "residualSugar": 1.9,
+  "chlorides": 0.076,
+  "freeSulfurDioxide": 11,
+  "totalSulfurDioxide": 34,
+  "density": 0.9978,
+  "pH": 3.51,
+  "sulphates": 0.56,
+  "alcohol": 9.4
+}
 
 df = pd.read_csv("Wines.csv")
 model, x_train, x_test, y_train, y_test = get_model(df)
 model = train_model(model,x_train,y_train)
 
-print(predict_quality(new_wine,model))
+#print(predict_quality(new_wine,model))
 
 #routes 
 
@@ -57,21 +73,26 @@ async def get_module():
     return{"message": Model.modelName}
 
 @app.get("/api/predict")
-async def create_item(item: Item):
-    return item
+async def get_module():
+    return get_best_wine(df)
 
 @app.get("/api/model/description")
 async def get_module():
-    return{"Paramètres": Model.parameters,"Métriques de Performance": Model.parameters}
+    descript = description(model, x_test, y_test)
+    return{"Voici les paramètres du modèle": descript[0] , " avec un précision de" : descript[1]}
 
 @app.put("/api/model")
-async def create_item(item: Item):
-    return item
+async def create_item(item: New_wine_in_df):
+    new_df = add_to_df(df,item)
+    return{"C'est bon, c'est rajouté au df"}
 
 @app.post("/api/predict")
 async def create_item(item: Item):
-    return item
+    return predict_quality(item,model)
 
 @app.post("/api/model/retrain")
-async def create_item(item: Item):
-    return item
+async def get_module():
+    model,x_train,x_test,y_train,y_test = get_new_model(new_df)
+    model = train_model(model,x_train,y_train)
+    pickle_model(model)
+    return {"Modèle réentrainé et sérialisé"}

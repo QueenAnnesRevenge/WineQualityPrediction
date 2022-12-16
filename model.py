@@ -59,7 +59,7 @@ def description(model, x_test, y_test):
     report = classification_report(y_test,y_pred)
     accuracy = accuracy_score(y_test,y_pred)
     
-    return params, support_train, report, accuracy
+    return params, accuracy
 
 #add a new row to the dataframe 
 def add_to_df(df,new_row):
