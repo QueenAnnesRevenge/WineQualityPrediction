@@ -102,11 +102,25 @@ async def create_item(new : New_wine_in_df):
 
 @app.post("/api/predict")
 async def create_item(item: Item):
-    return predict_quality(item,model)
+    wine = {'fixedAcidity' : item.fixedAcidity,
+    'volatileAcidity' : item.volatileAcidity,
+    'citricAcid' : item.citricAcid,
+    'residualSugar' :item.residualSugar,
+    'chlorides' : item.chlorides,
+    'freeSulfurDioxide' : item.freeSulfurDioxide,
+    'totalSulfurDioxide' : item.totalSulfurDioxide,
+    'density' : item.density,
+    'pH' : item.pH,
+    'sulphates' : item.sulphates,
+    'alcohol' : item.alcohol
+    }
+    model = pickle.load(open('model.pkl', 'rb'))
+    return predict_quality(wine,model)
 
 @app.post("/api/model/retrain")
 async def get_module():
-    model,x_train,x_test,y_train,y_test = get_new_model(new_df)
+    df = pd.read_csv("Wines.csv")
+    model,x_train,x_test,y_train,y_test = get_model(df)
     model = train_model(model,x_train,y_train)
     pickle_model(model)
     return {"Modèle réentrainé et sérialisé"}

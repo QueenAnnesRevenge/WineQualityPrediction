@@ -48,8 +48,8 @@ def train_model(model, x_train, y_train):
 
 #predict quality of the wine thanks to the model
 def predict_quality(new_wine,model):
-    wine = json_normalize(new_wine)
-    return model.predict(wine)[0]
+    new = pd.DataFrame(new_wine, index=[0])
+    return int(model.predict(new)[0])
 
 #get the description of the model : parameters, lenght of train data, the classification report and the accuracy of the model based on test data
 def description(model, x_test, y_test):
@@ -76,14 +76,6 @@ def add_to_df(df,new_row):
         writer_object.writerow(new_line)
         f_object.close()
 
-#get model of prediction and the new data divided in train and test data
-def get_new_model(df):
-    features = df.drop(['quality'], axis=1)
-
-    x_train,x_test,y_train,y_test = train_test_split(features,df['quality'],test_size=0.2, random_state=40)
-    model = RandomForestClassifier(random_state=1)
-    
-    return(model,x_train,x_test,y_train,y_test)
 
 #save model in model.pkl
 def pickle_model(model):
