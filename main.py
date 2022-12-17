@@ -1,9 +1,12 @@
 from enum import Enum
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from typing import Optional
 from pydantic import BaseModel
 from model import *
 
+
+file_path = "model.pkl"
 
 class Model(str,Enum):
     modelName = "ApprentissageSupervisé | Random Forrest",
@@ -12,7 +15,7 @@ class Model(str,Enum):
     others =""
     
     
-class Item(BaseModel):
+class Wine(BaseModel):
     fixedAcidity : float
     volatileAcidity : float
     citricAcid : float
@@ -71,7 +74,7 @@ async def root():
 
 @app.get("/api/model")
 async def get_module():
-    return{"message": Model.modelName}
+    return FileResponse(path=file_path, filename=file_path, media_type='model/pkl')
 
 @app.get("/api/predict")
 async def get_module():
@@ -83,7 +86,7 @@ async def get_module():
     return{"Voici les paramètres du modèle": descript[0] , " avec un précision de" : descript[1]}
 
 @app.put("/api/model")
-async def create_item(new : New_wine_in_df):
+async def create_wine(new : New_wine_in_df):
     new_row = {'fixedAcidity' : new.fixedAcidity,
     'volatileAcidity' : new.volatileAcidity,
     'citricAcid' : new.citricAcid,
@@ -101,21 +104,21 @@ async def create_item(new : New_wine_in_df):
     return {"On a bien rajouté une entrée au modele"}
 
 @app.post("/api/predict")
-async def create_item(item: Item):
-    wine = {'fixedAcidity' : item.fixedAcidity,
-    'volatileAcidity' : item.volatileAcidity,
-    'citricAcid' : item.citricAcid,
-    'residualSugar' :item.residualSugar,
-    'chlorides' : item.chlorides,
-    'freeSulfurDioxide' : item.freeSulfurDioxide,
-    'totalSulfurDioxide' : item.totalSulfurDioxide,
-    'density' : item.density,
-    'pH' : item.pH,
-    'sulphates' : item.sulphates,
-    'alcohol' : item.alcohol
+async def create_wine(Wine: Wine):
+    Wine = {'fixedAcidity' : Wine.fixedAcidity,
+    'volatileAcidity' : Wine.volatileAcidity,
+    'citricAcid' : Wine.citricAcid,
+    'residualSugar' :Wine.residualSugar,
+    'chlorides' : Wine.chlorides,
+    'freeSulfurDioxide' : Wine.freeSulfurDioxide,
+    'totalSulfurDioxide' : Wine.totalSulfurDioxide,
+    'density' : Wine.density,
+    'pH' : Wine.pH,
+    'sulphates' : Wine.sulphates,
+    'alcohol' : Wine.alcohol
     }
     model = pickle.load(open('model.pkl', 'rb'))
-    return predict_quality(wine,model)
+    return predict_quality(Wine,model)
 
 @app.post("/api/model/retrain")
 async def get_module():
