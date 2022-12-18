@@ -1,13 +1,18 @@
 # Wine Quality Prediction
 API applied to AI
+
 TP note pour le 18/12
 
 ## Pré-requis
 
 Téléchargez les documents :
+
 -main.py
+
 -model.py
+
 -Wines.csv
+
 -model.pkl
 
 Liste des packages nécessaires :
