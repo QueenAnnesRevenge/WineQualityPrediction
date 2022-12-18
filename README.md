@@ -43,7 +43,7 @@ En rajoutant /docs à l'adresse vous verrez apparaître toutes les commandes API
 
 GET/api/model : Permez de lancer le téléchargement du fichier model.pkl conenant le modèle préentrainé.
 
-PUT/api/model : Rentrez les caractéristiques d'un nouveau vin dans la base de données. (le fichier Wines.csv doit être fermer)
+PUT/api/model : Rentrez les caractéristiques d'un nouveau vin dans la base de données. (le fichier Wines.csv doit être fermer + le prompt doit etre au début de la ligne suivant la dernière entrée)
 
 GET/api/predict : Affiche les caractéristiques du meilleur vin.
 
