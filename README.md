@@ -2,7 +2,7 @@
 API applied to AI
 TP note pour le 18/12
 
-## Pour commencer
+## Pré-requis
 
 Téléchargez les documents :
 -main.py
@@ -10,8 +10,6 @@ Téléchargez les documents :
 -Wines.csv
 -model.pkl
 
-
-## Pré-requis
 Liste des packages nécessaires :
 -fastapi
 -pydantic
