@@ -1,10 +1,9 @@
 import numpy as np
 import pandas as pd
-import matplotlib as plt
-from pandas import json_normalize
 import pickle
-from csv import writer
 
+from pandas import json_normalize
+from csv import writer
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
