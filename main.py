@@ -2,8 +2,6 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from model import *
-
-file_path = "model.pkl"    
     
 class Wine(BaseModel):
     fixedAcidity : float
@@ -34,24 +32,6 @@ class New_wine_in_df(BaseModel):
 
 app = FastAPI()
 
-new_wine ={
-  "fixedAcidity": 7.4,
-  "volatileAcidity": 0.7,
-  "citricAcid": 0,
-  "residualSugar": 1.9,
-  "chlorides": 0.076,
-  "freeSulfurDioxide": 11,
-  "totalSulfurDioxide": 34,
-  "density": 0.9978,
-  "pH": 3.51,
-  "sulphates": 0.56,
-  "alcohol": 9.4
-}
-
-df = pd.read_csv("Wines.csv")
-model, x_train, x_test, y_train, y_test = get_model(df)
-model = train_model(model,x_train,y_train)
-
 #print(predict_quality(new_wine,model))
 
 #routes 
@@ -62,6 +42,7 @@ async def root():
 
 @app.get("/api/model")
 async def get_module():
+    file_path = "model.pkl"
     return FileResponse(path=file_path, filename=file_path, media_type='model/pkl')
 
 @app.get("/api/predict")
@@ -70,11 +51,15 @@ async def get_module():
 
 @app.get("/api/model/description")
 async def get_module():
+    df = pd.read_csv("Wines.csv")
+    model, x_train, x_test, y_train, y_test = get_model(df)   
+    model = pickle.load(open('model.pkl', 'rb'))
     descript = description(model, x_test, y_test)
     return{"Voici les paramètres du modèle": descript[0] , " avec un précision de" : descript[1]}
 
 @app.put("/api/model")
 async def create_wine(new : New_wine_in_df):
+    df = pd.read_csv("Wines.csv")
     new_row = {'fixedAcidity' : new.fixedAcidity,
     'volatileAcidity' : new.volatileAcidity,
     'citricAcid' : new.citricAcid,
