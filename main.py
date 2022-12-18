@@ -1,19 +1,9 @@
-from enum import Enum
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
-from typing import Optional
 from pydantic import BaseModel
 from model import *
 
-
-file_path = "model.pkl"
-
-class Model(str,Enum):
-    modelName = "ApprentissageSupervisé | Random Forrest",
-    parameters = "",
-    performanceMetrics = "",
-    others =""
-    
+file_path = "model.pkl"    
     
 class Wine(BaseModel):
     fixedAcidity : float
@@ -42,8 +32,6 @@ class New_wine_in_df(BaseModel):
     alcohol : float
     quality : float
 
-
-
 app = FastAPI()
 
 new_wine ={
@@ -70,7 +58,7 @@ model = train_model(model,x_train,y_train)
 
 @app.get("/")
 async def root():
-    return {"message": "Bonjour Lucas, tu devrais essayer /api/model en premier :)"}
+    return {"message": "Bonjour Lucas, tu devrais essayer /docs en premier :)"}
 
 @app.get("/api/model")
 async def get_module():

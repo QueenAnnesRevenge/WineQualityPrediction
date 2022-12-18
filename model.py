@@ -12,6 +12,12 @@ from sklearn.preprocessing import StandardScaler
 
 def get_best_wine():
     
+    """this function returns the best wine possible in the given dataset
+
+    Returns:
+        best_wine (dict): wine criterias that can be used to determine its quality.
+    """
+    
     df = pd.read_csv("Wines.csv")
     df = df.sort_values(by = 'quality', ascending=False)
 
@@ -29,8 +35,22 @@ def get_best_wine():
 
     return best_wine
 
-#get model of prediction and the data divided in train and test data
+
 def get_model(df):
+    
+    """this function gets the prediction model and the data divided in both train and test data
+    
+    Args: 
+        df (dataframe): Wines.csv
+    
+    Returns:
+        model: prediction model
+        x_train: features of training (wine criterias)
+        x_test: features of test data
+        y_train: features of training (scores)
+        y_test: features of test data
+    """
+    
     df = df.drop(columns=['Id'])
     df.columns = ['fixedAcidity', 'volatileAcidity', 'citricAcid', 'residualSugar', 'chlorides', 'freeSulfurDioxide', 'totalSulfurDioxide', 'density', 'pH', 'sulphates', 'alcohol', 'quality']
 
@@ -40,19 +60,52 @@ def get_model(df):
     model = RandomForestClassifier(random_state=1)
     return(model,x_train,x_test,y_train,y_test)
 
-#training of the model thanks to the train data
+
 def train_model(model, x_train, y_train):   
+
+    """trains the model thanks to the train data
+    
+    Args:
+        model (RandomForestClassifier): current model that will be trained
+    
+    Returns:
+        model (RandomForestClassifier) : model that was trained
+    """
 
     model.fit(x_train, y_train)
     return(model)
 
-#predict quality of the wine thanks to the model
+
 def predict_quality(new_wine,model):
+    
+    """predicts the wine's quality thanks to the model
+    
+    Args:
+        new_wine (Wine): new wine, wich we want to rate
+        model (RandomForestClassifier) : model used to predict the quality
+
+    Returns:
+        model.predict(new)[0] (int): the wine's quality (from 3 to 8 because of the data set, but could be different if we add more data)
+    """
+    
     new = pd.DataFrame(new_wine, index=[0])
     return int(model.predict(new)[0])
 
-#get the description of the model : parameters, lenght of train data, the classification report and the accuracy of the model based on test data
+
 def description(model, x_test, y_test):
+    
+    """ gets the model description: parameters, lenght of train data, the classification report and the accuracy of the model based on test data
+
+    Args:
+        model (RandomForestClassifier): current model
+        x_test (dataframe): features of test data
+        y_test (dataframe): features of test data
+
+    Returns:
+        params (dict): model parameters
+        accuracy (float) : model accuracy
+    """
+    
     y_pred = model.predict(x_test)
     support_test = classification_report(y_test,y_pred,output_dict=True)['macro avg']['support']
 
@@ -63,8 +116,16 @@ def description(model, x_test, y_test):
     
     return params, accuracy
 
-#add a new row to the csv 
+
 def add_to_df(df,new_row):
+    
+    """adds a new entry (wine) to the csv
+    
+    Args:
+        df (dataframe): Wines.csv
+        new_row (dataframe): new wine entry
+    """
+    
     last_row = df.tail(1)
     new_id = int(last_row.iloc[0][12]+1)
     new_line = [new_row['fixedAcidity'],new_row['volatileAcidity'],new_row['citricAcid'],new_row['residualSugar'],
@@ -79,4 +140,14 @@ def add_to_df(df,new_row):
 
 #save model in model.pkl
 def pickle_model(model):
+    
+    """serialise the model into a pickle file
+    
+    Args:
+        model (RandomForestClassifier): last trained model
+        
+    Returns:
+        pickle file modified with the last trained model
+    """
+    
     pickle.dump(model, open('model.pkl', 'wb'))
