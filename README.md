@@ -1,7 +1,8 @@
 # Wine Quality Prediction
+
 API applied to AI
 
-TP note pour le 18/12
+TP noté pour le 18/12
 
 ## Pré-requis
 
@@ -30,7 +31,8 @@ Liste des packages nécessaires :
 
 - csv
 
-## Démarrage
+## Utilisation
+
 Lancer sur votre terminal la commande : 
 
 uvicorn main:app --reload
@@ -54,6 +56,7 @@ POST/api/model/retrain : Relance l'entraînement du modèle.
 
 
 ## Auteurs
+
 Arboin Mathieu
 
 Ruau Nicolas
