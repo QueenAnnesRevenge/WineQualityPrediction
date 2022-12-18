@@ -49,7 +49,8 @@ POST/api/predict : Rentrez les caractéristiques d'un vin pour prédire sa quali
 
 GET/api/model/description : Affiche les paramètres du modèle ainsi que sa précision.
 
-POST/api/model/retrain : Relance l'entraînement du modèle (il est conseillé d'avoir utilisé la commande PUT/api/model avant si vous espérez un changement. 
+POST/api/model/retrain : Relance l'entraînement du modèle.
+(il est conseillé d'avoir utilisé la commande PUT/api/model avant si vous espérez un changement dans la prédiction) 
 
 
 ## Auteurs
