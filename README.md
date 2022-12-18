@@ -33,7 +33,7 @@ Liste des packages nécessaires :
 
 ## Utilisation
 
-Lancer sur votre terminal la commande : 
+Lancez sur votre terminal la commande : 
 
 uvicorn main:app --reload
 
