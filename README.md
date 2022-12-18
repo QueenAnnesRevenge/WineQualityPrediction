@@ -5,10 +5,13 @@ TP note pour le 18/12
 ## Pour commencer
 
 Téléchargez les documents :
--
+-main.py
+-model.py
+-Wines.csv
+-model.pkl
 
 
-### Pré-requis
+## Pré-requis
 Liste des packages nécessaires :
 -fastapi
 -pydantic
